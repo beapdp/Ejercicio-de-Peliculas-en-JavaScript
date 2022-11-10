@@ -62,7 +62,7 @@ const secondMainDiv = document.createElement('div');
 secondMainDiv.classList.add('secondContainer');
 mainDiv.appendChild(secondMainDiv);
 
-const divList = document.createElement('button');
+const divList = document.createElement('div');
 divList.classList.add('divList');
 secondMainDiv.appendChild(divList);
 
@@ -77,38 +77,114 @@ const divMovies = document.createElement('div');
 divMovies.classList.add('divMovies');
 secondMainDiv.appendChild(divMovies);
 
+//Constantes:
+const movieDetails = [];
+
 //Función recoger peliculas de mi api y pintarlas en la página:
-    
-const movieList = (movies) => {
-    //console.log(movies);
-    //console.log(movies[1].image);
-    for (const movie of movies) {
-        //console.log(movie);
-        //console.log(movie.direction);
+   
+
+function getAndDrawMovies() {   
+    const movieList = (movies) => {
+        //console.log(movies);
+        //console.log(movies[1].image);
+        for (const movie of movies) {
+            //console.log(movie);
+            //console.log(movie.direction);
         
-        const movieDay = document.createElement("div");
-        const movieName = document.createElement("h3");
-        const movieImage = document.createElement("img");
+            const movieDay = document.createElement("div");
+            const movieName = document.createElement("h3");
+            const movieImage = document.createElement("img");
 
-        movieDay.classList.add('day');
-        movieName.classList.add('tittle');
-        movieImage.classList.add('image');
+            movieDay.classList.add('day');
+            movieName.classList.add('tittle');
+            movieImage.classList.add('image');
 
-        movieName.textContent = movie.tittle;
-        movieImage.src = movie.image;
+            movieName.textContent = movie.tittle;
+            movieImage.src = movie.image;
 
-        movieDay.appendChild(movieName);
-        movieDay.appendChild(movieImage);
-        divMovies.appendChild(movieDay);
+            movieDay.appendChild(movieName);
+            movieDay.appendChild(movieImage);
+            divMovies.appendChild(movieDay);
 
-        divList.addEventListener('click', movieList);
+            movieDay.addEventListener("click", () => {
+                mainDiv.innerHTML = "";
+                //movieDay.classList.add('changeDivMovie');
+                //console.log(movie.tittle);
+                mainDiv.classList.add('mainDivDetail');
+
+                const containerImage = document.createElement('div');
+                const imageDetail = document.createElement("img");
+
+                containerImage.classList.add('containerImageDetail');
+                //tittleDetail.classList.add('tittleDetail');
+                imageDetail.classList.add('imageDetail')
+
+                //tittleDetail.textContent = movie.tittle;
+                imageDetail.src = movie.image;
+
+                mainDiv.appendChild(containerImage);
+                //containerImage.appendChild(tittleDetail);
+                containerImage.appendChild(imageDetail);
+                //containerDetail.appendChild(movieDetail);
+
+                const containerDetails = document.createElement('div');
+                const tittleDetail = document.createElement("h3");
+                const detailDirection = document.createElement('p');
+                const detailYear = document.createElement('p');
+                const detailDuration = document.createElement('p');
+                const detailCountry = document.createElement('p');
+                const detailGénero = document.createElement('p');
+                
+                
+                containerDetails.classList.add('containerDetails');
+                tittleDetail.classList.add('tittleDetail');
+                detailDirection.classList.add('detailDirection');
+                detailYear.classList.add('detailYear');
+                detailDuration.classList.add('detailDuration');
+                detailCountry.classList.add('detailCountry');
+                detailGénero.classList.add('detailGénero');
+
+                tittleDetail.textContent = movie.tittle;
+                
+                /*const element = () => {for (const prop in movie) {
+                        element = movie[prop];
+                        console.log(element);
+                }}*/
+                detailDirection.textContent = movie.direction;
+                
+                /*JSON.stringify(movie);
+                Object.keys(movie),
+                Object.values(movie);*/
+                
+                detailYear.textContent = movie.year;
+                detailDuration.textContent = movie.duration;
+                detailCountry.textContent = movie.country;
+                detailGénero.textContent = movie.género;
+
+                mainDiv.appendChild(containerDetails);
+                containerDetails.appendChild(tittleDetail);
+                containerDetails.appendChild(detailDirection);
+                containerDetails.appendChild(detailYear);
+                containerDetails.appendChild(detailDuration);
+                containerDetails.appendChild(detailCountry);
+                containerDetails.appendChild(detailGénero);
+                
+                movieDetails = movie;
+
+                            })
+                            console.log(movie);
+        }
+        
     }
+    fetch ("http://localhost:3000/oneDayoneMovie").then((res) => 
+        res.json()).then((movies) => movieList (movies));
 };
 
-fetch ("http://localhost:3000/oneDayoneMovie").then((res) => res.json()).then((movies) => movieList (movies));
 
 
 
-
-
-
+divList.addEventListener("click", getAndDrawMovies);
+tittleDiv.addEventListener("click", _ => {
+    console.log('hola');
+    location.reload();});
+comedyFinder.addEventListener("click", () => {console.log('probando');});
